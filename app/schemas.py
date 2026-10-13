@@ -2,6 +2,8 @@
 from datetime import date
 
 from pydantic import BaseModel, ConfigDict, Field
+from pydantic import EmailStr, Field
+
 
 
 class KloterCreate(BaseModel):
@@ -66,3 +68,23 @@ class ScanCreate(BaseModel):
     user_id: str
     scan_type: str = "masuk"
     location: str | None = None
+
+class ForgotPasswordRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    email: EmailStr
+
+
+class VerifyResetOTPRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    email: EmailStr
+    otp: str = Field(pattern=r"^\d{6}$")
+
+
+class ResetPasswordRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    email: EmailStr
+    reset_token: str = Field(min_length=32, max_length=200)
+    new_password: str = Field(min_length=8, max_length=128)
