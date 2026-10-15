@@ -1,9 +1,6 @@
-
 from datetime import date
 
-from pydantic import BaseModel, ConfigDict, Field
-from pydantic import EmailStr, Field
-
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class KloterCreate(BaseModel):
@@ -19,8 +16,14 @@ class KloterCreate(BaseModel):
 class ProfileUpdate(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    username: str | None = Field(
+        default=None,
+        min_length=3,
+        max_length=30,
+        pattern=r"^[A-Za-z0-9_]{3,30}$",
+    )
     full_name: str | None = Field(default=None, min_length=1)
-    email: str | None = None
+    email: EmailStr | None = None
     phone: str | None = None
     role: str | None = None
     is_active: bool | None = None
@@ -41,15 +44,21 @@ class TaskCreate(BaseModel):
     description: str | None = None
     assigned_to: str | None = None
     kloter_id: str | None = None
-    status: str = "belum"
-    priority: str = "sedang"
+    status: str = "pending"
+    priority: str = "normal"
     due_date: date | None = None
+
+
+class TaskStatusUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    status: str = Field(min_length=1, max_length=50)
 
 
 class LoginRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    email: str = Field(min_length=1)
+    email: EmailStr
     password: str = Field(min_length=1)
 
 
@@ -68,6 +77,7 @@ class ScanCreate(BaseModel):
     user_id: str
     scan_type: str = "masuk"
     location: str | None = None
+
 
 class ForgotPasswordRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
