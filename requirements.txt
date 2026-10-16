@@ -5,3 +5,4 @@ supabase
 python-dotenv
 pydantic[email]
 python-multipart
+openpyxl

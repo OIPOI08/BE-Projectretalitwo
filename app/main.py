@@ -11,6 +11,9 @@ from .routes import (
     notifications,
     scans,
     tasks,
+    checklist_tasks,
+    itinerary_excel,
+    itineraries,
 )
 
 app = FastAPI(
@@ -39,6 +42,9 @@ app.include_router(tasks.router)
 app.include_router(attendance.router)
 app.include_router(scans.router)
 app.include_router(notifications.router)
+app.include_router(checklist_tasks.router)
+app.include_router(itinerary_excel.router)
+app.include_router(itineraries.router)
 
 
 @app.get("/")
